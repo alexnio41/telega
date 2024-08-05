@@ -1,5 +1,4 @@
-# API_URL = 'https://api.telegram.org/bot'
-# BOT_TOKEN = '7330218093:AAF3A7CPSRhy2y0RqOi6Yj2DpXjYrXy8V5I'
+
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command
