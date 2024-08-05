@@ -35,17 +35,41 @@ async def send_photo_echo(message: Message):
     print(message)
     await message.answer('Чудесная фотка')
 
-# Этот хэндлер будет срабатывать на любые ваши текстовые сообщения,
-# кроме команд "/start" и "/help"
-async def send_echo(message: Message):
-    await message.reply(text=message.text)
+@dp.message(F.voice)
+async def process_sent_voice(message: Message):
+    # Выводим апдейт в терминал
+    print(message)
+    # Отправляем сообщение в чат, откуда пришло голосовое
+    await message.answer(text='Вы прислали голосовое сообщение!')
+
+# Навешиваем декоратор без фильтров, чтобы ловить большинство типов апдейтов
+@dp.message()
+async def process_any_update(message: Message):
+    # Выводим апдейт в терминал
+    print(message)
+    # Отправляем сообщение в чат, откуда пришел апдейт
+    await message.answer(text='Вы что-то прислали')
 
 dp.message.register(process_start_command, Command(commands='start'))
 dp.message.register(process_help_command, Command(commands='help'))
 dp.message.register(process_zadachi_command, Command(commands='zadachi'))
 dp.message.register(send_photo_echo, F.photo)
 dp.message.register(process_sticker, F.sticker)  # Пример использования фильтра для стикеров
-dp.message.register(send_echo)
+# dp.message.register(send_echo)
+
+# Этот хэндлер будет срабатывать на любые ваши текстовые сообщения,
+# кроме команд "/start" и "/help"
+@dp.message()
+async def send_echo(message: Message):
+    try:
+        await message.send_copy(chat_id=message.chat.id)
+    except TypeError:
+        await message.reply(
+            text='Данный тип апдейтов не поддерживается '
+                 'методом send_copy'
+        )
+
+
 
 if __name__ == '__main__':
     dp.run_polling(bot)
