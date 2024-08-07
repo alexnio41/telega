@@ -2,7 +2,7 @@ import random
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandStart
 from aiogram.types import Message
-from data_base import BOT_TOKEN
+from Data_base import BOT_TOKEN
 
 
 # Вместо BOT TOKEN HERE нужно вставить токен вашего бота, полученный у @BotFather
